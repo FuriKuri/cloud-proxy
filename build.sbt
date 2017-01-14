@@ -1,6 +1,17 @@
-lazy val root = (project in file(".")).
+lazy val commonSettings = Seq(
+  organization := "com.example",
+  version := "0.1.0-SNAPSHOT",
+  scalaVersion := "2.12.1"
+)
+
+lazy val server = (project in file("server")).
   settings(
-    name := "hello",
-    version := "1.0",
-    scalaVersion := "2.11.8"
+    commonSettings,
+    name := "server"
+  )
+
+lazy val client = (project in file("client")).
+  settings(
+    commonSettings,
+    name := "client"
   )
