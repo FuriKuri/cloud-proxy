@@ -6,8 +6,6 @@ import akka.io.{IO, Tcp}
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.actor.ActorLogging
 
-
-
 class TcpServer extends Actor with ActorLogging {
 
   import Tcp._
@@ -23,8 +21,8 @@ class TcpServer extends Actor with ActorLogging {
 
     case c @ Connected(remote, local) =>
       log.info("Connection received from hostname: " + remote.getHostName + " address: " + remote.getAddress.toString)
-      val handler = context.actorOf(Props[TcpHandler])
       val connection = sender()
+      val handler = context.actorOf(Props(new TcpHandler(connection)))
       connection ! Register(handler)
   }
 
