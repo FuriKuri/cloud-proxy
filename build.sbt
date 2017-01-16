@@ -18,5 +18,8 @@ lazy val server = (project in file("server")).
 lazy val client = (project in file("client")).
   settings(
     commonSettings,
-    name := "client"
+    name := "client",
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-actor" % akkaVersion
+    )
   )
