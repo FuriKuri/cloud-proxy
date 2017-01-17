@@ -4,7 +4,7 @@ import akka.actor._
 
 import scala.util.control.NonFatal
 
-object Main {
+object ClientTest {
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("Main")
     val app = system.actorOf(Props[Listener])
