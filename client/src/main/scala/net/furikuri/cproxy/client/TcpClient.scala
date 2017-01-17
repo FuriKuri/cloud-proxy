@@ -30,7 +30,6 @@ class TcpClient(remote: InetSocketAddress, listener: ActorRef) extends Actor {
         case data: ByteString =>
           connection ! Write(data)
         case CommandFailed(w: Write) =>
-          // O/S buffer was full
           listener ! "write failed"
         case Received(data) =>
           listener ! data
