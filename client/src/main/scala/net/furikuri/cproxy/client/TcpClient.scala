@@ -2,7 +2,7 @@ package net.furikuri.cproxy.client
 
 import java.net.InetSocketAddress
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.io.{IO, Tcp}
 import akka.util.ByteString
 
@@ -11,7 +11,7 @@ object TcpClient {
     Props(classOf[TcpClient], remote, replies)
 }
 
-class TcpClient(remote: InetSocketAddress, listener: ActorRef) extends Actor {
+class TcpClient(remote: InetSocketAddress, listener: ActorRef) extends Actor with ActorLogging {
   import Tcp._
   import context.system
 
@@ -28,10 +28,12 @@ class TcpClient(remote: InetSocketAddress, listener: ActorRef) extends Actor {
       connection ! Register(self)
       context become {
         case data: ByteString =>
+          log.info("Write data")
           connection ! Write(data)
         case CommandFailed(w: Write) =>
           listener ! "write failed"
         case Received(data) =>
+          log.info("New data")
           listener ! data
         case "close" =>
           connection ! Close

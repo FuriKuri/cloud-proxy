@@ -3,7 +3,7 @@ package net.furikuri.cproxy.client
 import java.net.InetSocketAddress
 
 import akka.actor.{Actor, ActorLogging}
-import akka.io.Tcp.{CommandFailed, Connect, Connected, ConnectionClosed}
+import akka.io.Tcp._
 import akka.util.ByteString
 
 
@@ -18,10 +18,14 @@ class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLoggi
 
     case Connected(r, l) =>
       log.info(s"${sender}: The local ${l} connected to the remote ${r}")
-      sender ! ByteString("Hello World")
+      sender ! ByteString("hello")
 
     case cc: ConnectionClosed =>
       log.info(s"${sender}: ${cc}")
       context stop self
+
+    case _: ByteString =>
+      log.info("Got new data")
+      sender ! ByteString("HTTP/1.1 200 OK\n\nHello World")
   }
 }
