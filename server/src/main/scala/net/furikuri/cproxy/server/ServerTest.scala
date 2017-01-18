@@ -4,5 +4,6 @@ import akka.actor.{ActorSystem, Props}
 
 object ServerTest extends App {
   val system = ActorSystem("TcpServerTest")
-  val server = system.actorOf(Props[TcpServer])
+  val endpointServer = system.actorOf(Props(new ProxyServer(8080)))
+  val clientProxyServer = system.actorOf(Props(new ClientProxy(4444, endpointServer)))
 }
