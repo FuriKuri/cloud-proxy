@@ -1,13 +1,21 @@
 package net.furikuri.cproxy.client
 
 import java.net.InetSocketAddress
+import java.util.UUID
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.io.Tcp._
 import akka.util.ByteString
+import net.furikuri.cproxy.client.CloudProxyConnector.LocalResponse
 
+
+object CloudProxyConnector {
+  final case class LocalResponse(data: ByteString, uuid: String) extends Event
+}
 
 class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLogging {
+
+  var localConnections:Map[String, ActorRef] = Map()
 
   context.actorOf(TcpClient.props(new InetSocketAddress(host, port), self))
 
@@ -32,9 +40,14 @@ class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLoggi
       val uuid = header.split(":").apply(0)
       log.info("Got new header:\n" + header)
       log.info("Got new data:\n" + rawData)
+      localConnections += uuid -> sender()
+      context.actorOf(Props(classOf[LocalConnection], self, uuid, ByteString(rawData)))
 
-      val response = ByteString("HTTP/1.1 200 OK\n\nHello World")
-      sender ! ByteString(uuid + ":" + response.length + "\n")
-      sender ! response
+    case LocalResponse(data, uuid) =>
+//      val response = ByteString("HTTP/1.1 200 OK\n\nHello World")
+      val response = data
+      val responseActor = localConnections(uuid)
+      responseActor ! ByteString(uuid + ":" + response.length + "\n")
+      responseActor ! response
   }
 }
