@@ -29,7 +29,7 @@ class ClientProxyHandler(connection: ActorRef, server: ActorRef) extends Actor w
         val value = data.decodeString("utf-8")
         val firstNewLine = value.indexOf("\n")
         val header = value.substring(0, firstNewLine)
-        val rawData = value.substring(firstNewLine + 1)
+        val rawData = data.drop(firstNewLine + 1).decodeString("utf-8")
         val uuid = header.split(":").apply(0)
         log.info("Got new header:\n" + header)
         log.info("Got new data:\n" + rawData)
@@ -37,7 +37,8 @@ class ClientProxyHandler(connection: ActorRef, server: ActorRef) extends Actor w
         val uuidKey = UUID.fromString(uuid)
         val receiver = clientsActors(uuidKey)
         log.info("Return")
-        receiver ! Write(ByteString(rawData))
+
+        receiver ! Write(data.drop(firstNewLine + 1))
       }
 
     case w: Write =>
