@@ -44,6 +44,7 @@ class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLoggi
       context.actorOf(Props(classOf[LocalConnection], self, uuid, ByteString(rawData)))
 
     case LocalResponse(data, uuid) =>
+      log.info("Forward bytes")
       val response = data
       val responseActor = localConnections(uuid)
       responseActor ! ByteString(uuid + ":" + response.length + "\n")

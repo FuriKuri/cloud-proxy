@@ -23,7 +23,7 @@ class PeerConnectionHandler(connection: ActorRef, clients: Map[String, ActorRef]
     case w: Write =>
       log.info("Back to client")
       connection ! Write(w.data)
-      connection ! Close
+//      connection ! Close
 
     case PeerClosed =>
       log.info("Peer closed")
