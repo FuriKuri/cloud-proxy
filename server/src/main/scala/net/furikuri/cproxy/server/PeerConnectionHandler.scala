@@ -15,15 +15,9 @@ class PeerConnectionHandler(connection: ActorRef, clients: Map[String, ActorRef]
       val clientProxy = clients("hello")
       clientProxy ! Write(data)
 
-//      val clientId = data.decodeString("utf-8")
-//      println("Received: " + clientId)
-//      connection ! Write(ByteString("HTTP/1.1 200 OK\n\nhello world"))
-//      connection ! Close
-
     case w: Write =>
       log.info("Back to client")
       connection ! Write(w.data)
-//      connection ! Close
 
     case PeerClosed =>
       log.info("Peer closed")
