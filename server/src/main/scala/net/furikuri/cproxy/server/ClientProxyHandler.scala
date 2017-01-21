@@ -23,7 +23,6 @@ class ClientProxyHandler(connection: ActorRef, server: ActorRef) extends Actor w
         val clientId = data.decodeString("utf-8")
         println("Received: " + clientId)
         server ! ClientConnected(clientId)
-//        connection ! Write(ByteString("OK"))
         init = true
       } else {
         val value = data.decodeString("utf-8")
