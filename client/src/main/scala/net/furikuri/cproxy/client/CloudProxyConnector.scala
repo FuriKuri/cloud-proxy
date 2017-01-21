@@ -21,22 +21,22 @@ class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLoggi
 
   override def receive: Receive = {
     case CommandFailed(conn: Connect) =>
-      log.info(s"${sender}: CommandFaild ${conn}")
+      log.info(s"$sender: CommandFailed $conn")
       context stop self
 
     case Connected(r, l) =>
-      log.info(s"${sender}: The local ${l} connected to the remote ${r}")
+      log.info(s"$sender: The local $l connected to the remote $r")
       sender ! ByteString("hello")
 
     case cc: ConnectionClosed =>
-      log.info(s"${sender}: ${cc}")
+      log.info(s"$sender: $cc")
       context stop self
 
     case data: ByteString =>
       val value = data.decodeString("utf-8")
       val firstNewLine = value.indexOf("\n")
       val header = value.substring(0, firstNewLine)
-      val rawData = value.substring(firstNewLine + 1).replaceFirst("Host:[^\n]+\n", "Host: localhost\n")
+      val rawData = value.substring(firstNewLine + 1).replaceFirst("Host:[^\n]+\n", s"Host: ${ProxyConfiguration.domain()}\n")
       val uuid = header.split(":").apply(0)
       log.info("Got new header:\n" + header)
       log.info("Got new data:\n" + rawData)
