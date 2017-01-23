@@ -36,7 +36,7 @@ class CloudProxyConnector(host: String, port: Int) extends Actor with ActorLoggi
       val value = data.decodeString("utf-8")
       val firstNewLine = value.indexOf("\n")
       val header = value.substring(0, firstNewLine)
-      val rawData = value.substring(firstNewLine + 1).replaceFirst("Host:[^\n]+\n", s"Host: ${ProxyConfiguration.domain()}\n")
+      val rawData = value.substring(firstNewLine + 1).replaceFirst("Host:[^\n]+\n", s"Host: ${ProxyConfiguration.targetDomain()}\n")
       val uuid = header.split(":").apply(0)
       log.info("Got new header:\n" + header)
       log.info("Got new data:\n" + rawData)
