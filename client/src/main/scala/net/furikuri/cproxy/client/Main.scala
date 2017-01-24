@@ -8,7 +8,8 @@ import scala.util.control.NonFatal
 object Main {
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("Main")
-    val app = system.actorOf(Props(new CloudProxyConnector("localhost", 4444)))
+    val app = system.actorOf(
+      Props(new CloudProxyConnector(ProxyConfiguration.serverDomain(), ProxyConfiguration.serverPort())))
     try {
       system.actorOf(Props(classOf[Terminator], app), "app-terminator")
     } catch {
