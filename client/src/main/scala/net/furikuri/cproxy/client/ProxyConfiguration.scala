@@ -3,7 +3,7 @@ package net.furikuri.cproxy.client
 import scala.util.Properties
 
 object ProxyConfiguration {
-  def targetDomain(): String = {
+  def targetHost(): String = {
     Properties.envOrElse("CPROXY_TARGET_HOST", "localhost")
   }
 

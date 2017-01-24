@@ -9,7 +9,7 @@ import net.furikuri.cproxy.client.CloudProxyConnector.LocalResponse
 
 
 class LocalConnection(proxy: ActorRef, uuid: String, request: ByteString) extends Actor with ActorLogging {
-  context.actorOf(TcpClient.props(new InetSocketAddress(ProxyConfiguration.targetDomain(), ProxyConfiguration.targetPort()), self))
+  context.actorOf(TcpClient.props(new InetSocketAddress(ProxyConfiguration.targetHost(), ProxyConfiguration.targetPort()), self))
 
   override def receive: Receive = {
     case CommandFailed(conn: Connect) =>
