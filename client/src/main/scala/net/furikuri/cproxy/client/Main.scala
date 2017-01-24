@@ -9,7 +9,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("Main")
     val app = system.actorOf(
-      Props(new CloudProxyConnector(ProxyConfiguration.serverDomain(), ProxyConfiguration.serverPort())))
+      Props(new CloudProxyConnector(ProxyConfiguration.serverHost(), ProxyConfiguration.serverPort())))
     try {
       system.actorOf(Props(classOf[Terminator], app), "app-terminator")
     } catch {

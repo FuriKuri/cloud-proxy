@@ -11,7 +11,7 @@ object ProxyConfiguration {
     Properties.envOrElse("CPROXY_TARGET_PORT", "8080").toInt
   }
 
-  def serverDomain(): String = {
+  def serverHost(): String = {
     Properties.envOrElse("CPROXY_SERVER_HOST", "localhost")
   }
 
