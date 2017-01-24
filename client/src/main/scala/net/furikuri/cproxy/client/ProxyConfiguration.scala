@@ -16,6 +16,6 @@ object ProxyConfiguration {
   }
 
   def serverPort(): Int = {
-    Properties.envOrElse("CPROXY_SERVER_PORT", "8080").toInt
+    Properties.envOrElse("CPROXY_SERVER_PORT", "4444").toInt
   }
 }
