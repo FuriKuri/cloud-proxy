@@ -3,7 +3,8 @@ val akkaVersion = "2.4.16"
 lazy val commonSettings = Seq(
   organization := "com.example",
   version := "0.1.0-SNAPSHOT",
-  scalaVersion := "2.12.1"
+  scalaVersion := "2.12.1",
+  test in assembly := {}
 )
 
 lazy val server = (project in file("server")).
@@ -12,7 +13,8 @@ lazy val server = (project in file("server")).
     name := "server",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion
-    )
+    ),
+    mainClass in assembly := Some("net.furikuri.cproxy.client.Main")
   )
 
 lazy val client = (project in file("client")).
@@ -21,5 +23,6 @@ lazy val client = (project in file("client")).
     name := "client",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion
-    )
+    ),
+    mainClass in assembly := Some("net.furikuri.cproxy.server.ServerTest")
   )
