@@ -14,7 +14,7 @@ lazy val server = (project in file("server")).
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion
     ),
-    mainClass in assembly := Some("net.furikuri.cproxy.client.Main")
+    mainClass in assembly := Some("net.furikuri.cproxy.server.ServerTest")
   )
 
 lazy val client = (project in file("client")).
@@ -24,5 +24,5 @@ lazy val client = (project in file("client")).
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion
     ),
-    mainClass in assembly := Some("net.furikuri.cproxy.server.ServerTest")
+    mainClass in assembly := Some("net.furikuri.cproxy.client.Main")
   )
