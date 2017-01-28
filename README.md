@@ -4,3 +4,6 @@ Simple server and client which act like a proxy
 
 ## Usage
 ### Build
+```
+docker build -t furikuri/cproxy-server server
+```
