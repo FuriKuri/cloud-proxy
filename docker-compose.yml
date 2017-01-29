@@ -3,3 +3,12 @@ server:
   ports:
     - "3000:3000"
     - "4444:4444"
+
+client:
+  build: ./client
+  links:
+    - server
+  environment:
+    CPROXY_SERVER_HOST: server
+    CPROXY_TARGET_HOST: furikuri.net
+    CPROXY_TARGET_PORT: 80
